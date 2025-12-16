@@ -2,22 +2,16 @@ import { video, togglePlay, formatTime, setVolume, skip } from './player.js';
 
 // Elements
 const controlsOverlay = document.querySelector('.controls-overlay');
-const playPauseBtns = [
-    document.getElementById('center-play-btn'),
-    document.getElementById('play-pause-btn')
-];
+const playPauseBtn = document.getElementById('play-pause-btn');
 const videoWrapper = document.querySelector('.video-wrapper');
 const progressBarFill = document.querySelector('.progress-bar-fill');
-const progressThumb = document.querySelector('.progress-thumb');
 const seekSlider = document.querySelector('.seek-slider');
 const currentTimeEl = document.getElementById('current-time');
 const durationEl = document.getElementById('duration');
-const volumeSlider = document.querySelector('.volume-slider');
 const volumeBtn = document.getElementById('volume-btn');
 const fullscreenBtn = document.getElementById('fullscreen-btn');
 const rewindBtn = document.getElementById('rewind-btn');
 const forwardBtn = document.getElementById('forward-btn');
-const backBtn = document.getElementById('back-btn');
 
 let controlsTimeout;
 
@@ -28,11 +22,9 @@ video.addEventListener('loadedmetadata', () => {
 });
 
 // Play/Pause Toggle
-playPauseBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        togglePlay();
-    });
+playPauseBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    togglePlay();
 });
 
 video.addEventListener('click', togglePlay);
@@ -48,10 +40,8 @@ video.addEventListener('pause', () => {
 });
 
 function updatePlayIcons(iconName) {
-    playPauseBtns.forEach(btn => {
-        const icon = btn.querySelector('.material-icons-round');
-        if (icon) icon.textContent = iconName;
-    });
+    const icon = playPauseBtn.querySelector('.material-icons-round');
+    if (icon) icon.textContent = iconName;
 }
 
 // Time Update & Progress
@@ -66,7 +56,6 @@ video.addEventListener('timeupdate', () => {
     if (duration > 0) {
         const percent = (current / duration) * 100;
         progressBarFill.style.width = `${percent}%`;
-        progressThumb.style.left = `${percent}%`;
         seekSlider.value = current;
     }
 });
@@ -77,24 +66,14 @@ seekSlider.addEventListener('input', (e) => {
     video.currentTime = time;
     const percent = (time / video.duration) * 100;
     progressBarFill.style.width = `${percent}%`;
-    progressThumb.style.left = `${percent}%`;
-});
-
-// Volume
-volumeSlider.addEventListener('input', (e) => {
-    const value = parseFloat(e.target.value);
-    setVolume(value);
-    updateVolumeIcon(value);
 });
 
 volumeBtn.addEventListener('click', () => {
     if (video.muted || video.volume === 0) {
         setVolume(1);
-        volumeSlider.value = 1;
         updateVolumeIcon(1);
     } else {
         setVolume(0);
-        volumeSlider.value = 0;
         updateVolumeIcon(0);
     }
 });
@@ -103,8 +82,6 @@ function updateVolumeIcon(value) {
     const icon = volumeBtn.querySelector('.material-icons-round');
     if (value === 0) {
         icon.textContent = 'volume_off';
-    } else if (value < 0.5) {
-        icon.textContent = 'volume_down';
     } else {
         icon.textContent = 'volume_up';
     }
@@ -148,10 +125,4 @@ function showControls() {
 }
 
 videoWrapper.addEventListener('mousemove', showControls);
-controlsOverlay.addEventListener('mousemove', showControls); // Ensure interacting keeps them open
-
-// Back Button (Mock)
-backBtn.addEventListener('click', () => {
-    console.log('Back button clicked');
-    // In a real app, this would navigate
-});
+controlsOverlay.addEventListener('mousemove', showControls);

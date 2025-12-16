@@ -1,7 +1,7 @@
 :root {
-    --primary-hue: 250;
-    --primary-color: hsl(var(--primary-hue), 100%, 70%);
-    --bg-dark: #0f0f13;
+    --primary-hue: 0;
+    --primary-color: #ff0000;
+    --bg-dark: #1a1a1a;
     --text-white: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.7);
     --glass-border: rgba(255, 255, 255, 0.1);
@@ -26,8 +26,7 @@ body {
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    /* Rich gradient background for better glass effect visibility */
-    background: radial-gradient(circle at top left, #2a2a35, #000000);
+    background: #1a1a1a;
 }
 
 .app-container {
@@ -42,10 +41,10 @@ body {
     position: relative;
     width: 100%;
     max-width: 1280px;
-    background: #000;
-    border-radius: 24px;
+    background: #000000;
+    border-radius: 0;
     overflow: hidden;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+    box-shadow: none;
     aspect-ratio: 16/9;
 }
 
