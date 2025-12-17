@@ -1,0 +1,106 @@
+:root {
+    --primary-hue: 0;
+    --primary-color: #ff0000;
+    --bg-dark: #1a1a1a;
+    --text-white: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-highlight: rgba(255, 255, 255, 0.2);
+
+    --font-main: 'Outfit', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: #1a1a1a;
+}
+
+.app-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 1280px;
+    background: #000000;
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: none;
+    aspect-ratio: 16/9;
+}
+
+/* ATMOSPHERE LAYER (Grain & Vignette) */
+.video-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Subtle noise grain using SVG/base64 could be heavy, using a simple radial vignette here first */
+    /* Grain simulation via repeating-radial-gradient or noise image needed. 
+       Using a very lightweight noise SVG data URI for 'Liquid' feel. */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    /* Barely visible grain */
+    pointer-events: none;
+    z-index: 10;
+    mix-blend-mode: overlay;
+    transition: opacity 2s ease;
+}
+
+.video-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
+    pointer-events: none;
+    z-index: 9;
+    transition: opacity 1s ease;
+}
+
+/* Idle / Ambient State */
+.video-wrapper.idle #main-video {
+    filter: brightness(0.9);
+    /* Dim slightly */
+    transition: filter 1s ease;
+}
+
+.video-wrapper.idle::before {
+    opacity: 0.07;
+    /* Grain rises slightly */
+}
+
+.video-wrapper.idle::after {
+    background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.6) 100%);
+    /* Vignette deepens */
+}
+
+#main-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.5s ease;
+}
