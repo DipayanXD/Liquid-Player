@@ -1,0 +1,55 @@
+/* Animations */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes scaleUp {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+.video-wrapper:hover .controls-overlay {
+    opacity: 1;
+}
+
+/* Button Interactions */
+.icon-btn:active {
+    transform: scale(0.95);
+}
+
+/* Play/Pause Animation for Center Button */
+.play-btn-large span {
+    transition: transform 0.2s ease;
+}
+
+.play-btn-large:hover span {
+    transform: scale(1.1);
+}
